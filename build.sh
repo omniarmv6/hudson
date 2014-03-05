@@ -86,6 +86,8 @@ then
   exit 1
 fi
 
+DEVICE=$(echo $LUNCH | sed s#omni_##g | sed s#-userdebug##g | sed s#-eng##g)
+
 if [ -z "$CLEAN" ]
 then
   echo CLEAN not specified
@@ -375,10 +377,29 @@ then
   fi
 fi
 
+## Test file name conflict (Max 1 build for 1 device on 1 day)
+## dl.androidarmv6.org
+DL_ANDROIDARMV6_ORG_DEVICE=/var/lib/jenkins/dl_androidarmv6_org/$DEVICE
+OMNI_ZIP=
+for f in $(ls $OUT/omni-*.zip)
+do
+  OMNI_ZIP=$(basename $f)
+done
+if [ -f $DL_ANDROIDARMV6_ORG_DEVICE/$OMNI_ZIP ]
+then
+    echo "File $OMNI_ZIP exists on dl.androidarmv6.org/$DEVICE"
+    echo "Only 1 build is allowed for 1 device on 1 day"
+    make clobber >/dev/null
+    rm -fr $OUT
+    exit 1
+fi
+
 # /archive
+mkdir -p $DL_ANDROIDARMV6_ORG_DEVICE
 for f in $(ls $OUT/omni-*.zip*)
 do
   ln $f $WORKSPACE/archive/$(basename $f)
+  cp $f $DL_ANDROIDARMV6_ORG_DEVICE
 done
 if [ -f $OUT/utilties/update.zip ]
 then
@@ -428,3 +449,6 @@ then
     check_result "Failure archiving $f"
   done
 fi
+
+## Deltas
+sh $WORKSPACE/hudson/opendelta.sh $DEVICE
