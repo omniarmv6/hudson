@@ -17,19 +17,20 @@ fi
 
 # ------ CONFIGURATION ------
 
-HOME=/var/lib/jenkins/build
+DL_ANDROIDARMV6_ORG=/var/lib/jenkins/dl_androidarmv6_org
+DELTA_ANDROIDARMV6_ORG=/var/lib/jenkins/delta_androidarmv6_org
 
 BIN_JAVA=java
-BIN_MINSIGNAPK=$HOME/delta/minsignapk.jar
-BIN_XDELTA=$HOME/delta/xdelta3
-BIN_ZIPADJUST=$HOME/delta/zipadjust
+BIN_MINSIGNAPK=$WORKSPACE/hudson/bin/minsignapk.jar
+BIN_XDELTA=$WORKSPACE/hudson/bin/xdelta3
+BIN_ZIPADJUST=$WORKSPACE/hudson/bin/zipadjust
 
 FILE_MATCH=omni-*.zip
-PATH_CURRENT=/var/lib/jenkins/jobs/omni-ota/workspace/archive
-PATH_LAST=$HOME/delta/last/$DEVICE
+PATH_CURRENT=$WORKSPACE/archive
+PATH_LAST=$DL_ANDROIDARMV6_ORG/last/$DEVICE
 
-KEY_X509=$HOME/.keys/platform.x509.pem
-KEY_PK8=$HOME/.keys/platform.pk8
+KEY_X509=/var/lib/jenkins/.keys/platform.x509.pem
+KEY_PK8=/var/lib/jenkins/.keys/platform.pk8
 
 # ------ PROCESS ------
 
@@ -139,7 +140,6 @@ echo "      \"md5_official\": \"$MD5_CURRENT\"" >> $DELTA
 echo "  }" >> $DELTA
 echo "}" >> $DELTA
 
-DELTA_ANDROIDARMV6_ORG=/var/lib/jenkins/delta_androidarmv6_org
 
 mkdir -p $DELTA_ANDROIDARMV6_ORG/nightlies/$DEVICE >/dev/null 2>/dev/null
 cp delta_out.d/* $DELTA_ANDROIDARMV6_ORG/nightlies/$DEVICE/.
