@@ -28,8 +28,8 @@ FILE_MATCH=omni-*.zip
 PATH_CURRENT=$WORKSPACE/archive
 PATH_LAST=$DELTA_ANDROIDARMV6_ORG/last/$DEVICE
 
-KEY_X509=/var/lib/jenkins/.keys/platform.x509.pem
-KEY_PK8=/var/lib/jenkins/.keys/platform.pk8
+KEY_X509=$WORKSPACE/$REPO_BRANCH/build_env/keys/platform.x509.pem
+KEY_PK8=$WORKSPACE/$REPO_BRANCH/build_env/keys/platform.pk8
 
 # ------ PROCESS ------
 

@@ -181,6 +181,7 @@ rm -fr vendor/zte/
 rm -rf .repo/manifests*
 rm -f .repo/local_manifests/dyn-*.xml
 rm -f .repo/local_manifest.xml
+
 repo init -u $SYNC_PROTO://github.com/omniarmv6/android.git -b $CORE_BRANCH $MANIFEST
 check_result "repo init failed."
 if [ ! -z "$CHERRYPICK_REV" ]
@@ -207,9 +208,15 @@ fi
 
 mkdir -p .repo/local_manifests
 rm -f .repo/local_manifest.xml
+rm -rf $WORKSPACE/$REPO_BRANCH/build_env
 
 echo Core Manifest:
 cat .repo/manifest.xml
+git clone git@bitbucket.org:omniarmv6/build_env.git $WORKSPACE/$REPO_BRANCH/build_env -b master
+if [ -f $WORKSPACE/$REPO_BRANCH/build_env/envsetup.sh ]
+then
+  sh $WORKSPACE/$REPO_BRANCH/build_env/envsetup.sh
+fi
 
 echo Syncing...
 # if sync fails:
