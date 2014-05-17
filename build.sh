@@ -197,7 +197,7 @@ if [ $USE_CCACHE -eq 1 ]
 then
   # make sure ccache is in PATH
   export PATH="$PATH:/opt/local/bin/:$PWD/prebuilts/misc/$(uname|awk '{print tolower($0)}')-x86/ccache"
-  export CCACHE_DIR=/ccache-jenkins/$JOB_NAME/$REPO_BRANCH
+  export CCACHE_DIR=/ccj/$JOB_NAME/$REPO_BRANCH/$DEVICE
   mkdir -p $CCACHE_DIR
 fi
 
@@ -305,9 +305,9 @@ fi
 
 if [ $USE_CCACHE -eq 1 ]
 then
-  if [ ! "$(ccache -s|grep -E 'max cache size'|awk '{print $4}')" = "64.0" ]
+  if [ ! "$(ccache -s|grep -E 'max cache size'|awk '{print $4}')" = "9.0" ]
   then
-    ccache -M 64G
+    ccache -M 9G
   fi
   echo "============================================"
   ccache -s
